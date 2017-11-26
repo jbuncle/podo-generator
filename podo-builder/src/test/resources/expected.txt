@@ -1,0 +1,15 @@
+package my.test.package;
+
+public class MyTestClass{
+
+	public String test;
+
+	public String getTest(){
+		return this.test;
+	}
+
+	public void setTest(String test){
+		this.test = test;
+	}
+
+}
