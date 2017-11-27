@@ -21,51 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.co.jbuncle.podogenerator;
+package uk.co.jbuncle.podogenerator.util;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
  * @author James Buncle <jbuncle@hotmail.com>
  */
-public class Pod {
+public class FileUtil {
 
-    private final String packageName;
-    private final String className;
-    private final Set<Member> members;
-
-    public Pod(final String packageName, final String className) {
-        this.packageName = packageName;
-        this.className = className;
-        this.members = new LinkedHashSet<>();
+    public static void write(final File file, final String content) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(content);
+        }
     }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    public void addMember(final Member member) {
-        this.members.add(member);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.packageName);
-        hash = 59 * hash + Objects.hashCode(this.className);
-        hash = 59 * hash + Objects.hashCode(this.members);
-        return hash;
-    }
-
 }

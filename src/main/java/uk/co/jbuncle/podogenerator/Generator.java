@@ -23,41 +23,45 @@
  */
 package uk.co.jbuncle.podogenerator;
 
-import uk.co.jbuncle.podogenerator.podo.PodoFromMap;
-import uk.co.jbuncle.podogenerator.podo.Podo;
-import uk.co.jbuncle.podogenerator.podo.Member;
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import uk.co.jbuncle.podogenerator.format.Formatter;
+import uk.co.jbuncle.podogenerator.podo.Podo;
+import uk.co.jbuncle.podogenerator.podo.PodoFromMap;
+import uk.co.jbuncle.podogenerator.util.FileUtil;
 
 /**
  *
  * @author James Buncle <jbuncle@hotmail.com>
  */
-public class PodoBuilderTest {
+public class Generator {
 
-    /**
-     * Test of build method, of class PodoGenerator.
-     */
-    @Test
-    public void testBuild_String_Map() {
-        System.out.println("build");
+    private final Formatter formatter;
+    private final PodoFromMap podoFromMap;
 
-        final Map<String, Object> map = new HashMap<>();
-        map.put("test", "somevalue");
-
-        final PodoFromMap instance = new PodoFromMap();
-        final Set<Podo> result = instance.build("my.test.package", "TestClass", map);
-
-        final Podo first = result.iterator().next();
-        assertEquals("TestClass", first.getClassName());
-        assertEquals("my.test.package", first.getPackageName());
-        
-        final Member member = first.getMembers().iterator().next();
-        assertEquals("String", member.getType());
-        assertEquals("test", member.getName());
+    public static Generator createGenerator() {
+        final Formatter formatter = new Formatter();
+        final PodoFromMap pfm = new PodoFromMap();
+        return new Generator(formatter, pfm);
     }
 
+    public Generator(final Formatter formatter, final PodoFromMap podoFromMap) {
+        this.formatter = formatter;
+        this.podoFromMap = podoFromMap;
+    }
+
+    public void generate(
+            final Map<String, Object> map,
+            final File dir,
+            final String packageName
+    ) throws IOException {
+        final Set<Podo> podos = this.podoFromMap.build(packageName, map);
+        for (final Podo podo : podos) {
+            final String classContent = formatter.format(podo);
+            final File file = new File(dir, podo.getClassName());
+            FileUtil.write(file, classContent);
+        }
+    }
 }

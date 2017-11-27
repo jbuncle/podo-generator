@@ -21,42 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.co.jbuncle.podogenerator.main;
+package uk.co.jbuncle.podogenerator.podo;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import uk.co.jbuncle.podogenerator.Pod;
-import uk.co.jbuncle.podogenerator.PodoGenerator;
-import uk.co.jbuncle.podogenerator.format.Formatter;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  *
  * @author James Buncle <jbuncle@hotmail.com>
  */
-public class Main {
+public class Podo {
 
-    public static void main(String[] args) {
+    private final String packageName;
+    private final String className;
+    private final Set<Member> members;
 
-        final Map<String, Object> map = new HashMap<>();
-        map.put("test", "somevalue");
-        map.put("test1", "1");
-        map.put("test3", "true");
-        map.put("MyComplexObject", new HashMap(map));
-
-        List<String> items = new LinkedList<>();
-        items.add("listitem1");
-        items.add("listitem2");
-        items.add("listitem3");
-
-        map.put("listItems", items);
-
-        final PodoGenerator podoGenerator = new PodoGenerator("uk.co.jbuncle.client");
-        podoGenerator.build("MyClient", map);
-
-        for (Pod pods : podoGenerator.build(map)) {
-            System.out.println(new Formatter().format(pods));
-        }
+    public Podo(final String packageName, final String className) {
+        this.packageName = packageName;
+        this.className = className;
+        this.members = new LinkedHashSet<>();
     }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void addMember(final Member member) {
+        this.members.add(member);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.packageName);
+        hash = 59 * hash + Objects.hashCode(this.className);
+        hash = 59 * hash + Objects.hashCode(this.members);
+        return hash;
+    }
+
 }

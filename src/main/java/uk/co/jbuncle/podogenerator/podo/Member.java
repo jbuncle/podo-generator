@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.co.jbuncle.podogenerator;
+package uk.co.jbuncle.podogenerator.podo;
 
 import java.util.Objects;
 import uk.co.jbuncle.podogenerator.util.StringUtility;

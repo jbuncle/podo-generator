@@ -31,8 +31,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import uk.co.jbuncle.podogenerator.Member;
-import uk.co.jbuncle.podogenerator.Pod;
+import uk.co.jbuncle.podogenerator.podo.Member;
+import uk.co.jbuncle.podogenerator.podo.Podo;
 
 /**
  *
@@ -47,7 +47,7 @@ public class FormatterTest {
     public void testFormat() throws IOException {
         System.out.println("format");
 
-        Pod pod = new Pod("my.test.package", "MyTestClass");
+        Podo pod = new Podo("my.test.package", "MyTestClass");
         pod.addMember(new Member("String", "Test"));
 
         Formatter instance = new Formatter();

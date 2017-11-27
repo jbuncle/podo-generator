@@ -23,12 +23,8 @@
  */
 package uk.co.jbuncle.podogenerator.format;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import uk.co.jbuncle.podogenerator.Member;
-import uk.co.jbuncle.podogenerator.Pod;
+import uk.co.jbuncle.podogenerator.podo.Member;
+import uk.co.jbuncle.podogenerator.podo.Podo;
 import uk.co.jbuncle.podogenerator.util.StringUtility;
 
 /**
@@ -37,14 +33,8 @@ import uk.co.jbuncle.podogenerator.util.StringUtility;
  */
 public class Formatter {
 
-    public void writeToDir(final File dir, Pod pod) throws IOException {
-        final File file = new File(dir, pod.getClassName());
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(this.format(pod));
-        }
-    }
 
-    public String format(Pod pod) {
+    public String format(Podo pod) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("package ").append(pod.getPackageName()).append(";\n");
@@ -61,7 +51,7 @@ public class Formatter {
         return sb.toString();
     }
 
-    private String generateMembers(Pod pod) {
+    private String generateMembers(Podo pod) {
         final StringBuilder sb = new StringBuilder();
 
         for (final Member member : pod.getMembers()) {
@@ -71,7 +61,7 @@ public class Formatter {
         return sb.toString();
     }
 
-    private String generateGetters(Pod pod) {
+    private String generateGetters(Podo pod) {
         final StringBuilder sb = new StringBuilder();
         for (Member member : pod.getMembers()) {
             sb.append(generateGetter(member));
@@ -87,7 +77,7 @@ public class Formatter {
         return sb.toString();
     }
 
-    private String generateSetters(Pod pod) {
+    private String generateSetters(Podo pod) {
         final StringBuilder sb = new StringBuilder();
         for (Member member : pod.getMembers()) {
             sb.append(generateSetter(member));

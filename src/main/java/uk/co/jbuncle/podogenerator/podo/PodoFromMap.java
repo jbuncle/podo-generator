@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.co.jbuncle.podogenerator;
+package uk.co.jbuncle.podogenerator.podo;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,27 +34,25 @@ import uk.co.jbuncle.podogenerator.util.TypeInferer;
  *
  * @author James Buncle <jbuncle@hotmail.com>
  */
-public class PodoGenerator {
+public class PodoFromMap {
 
-    private final Set<Pod> dataStructureClasses;
-    private final String packageName;
+    private final Set<Podo> dataStructureClasses;
 
-    public PodoGenerator(final String packageName) {
+    public PodoFromMap() {
         this.dataStructureClasses = new LinkedHashSet<>();
-        this.packageName = packageName;
     }
 
-    public Set<Pod> build(final String className, final Map<String, Object> members) {
-        this.createForEntry(className, members);;
+    public Set<Podo> build(final String packageName, final String className, final Map<String, Object> members) {
+        this.createForEntry(packageName, className, members);;
         return dataStructureClasses;
     }
 
-    public Set<Pod> build(final Map<String, Object> map) {
+    public Set<Podo> build(final String packageName, final Map<String, Object> map) {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (value instanceof Map) {
-                this.createForEntry(key, (Map) value);
+                this.createForEntry(packageName, key, (Map) value);
             } else {
                 // Assume native type
             }
@@ -62,23 +60,23 @@ public class PodoGenerator {
         return dataStructureClasses;
     }
 
-    private void createForEntry(final String className, final Map<String, Object> map) {
-        final Pod pods = new Pod(packageName, className);
+    private void createForEntry(final String packageName, final String className, final Map<String, Object> map) {
+        final Podo pods = new Podo(packageName, className);
         this.dataStructureClasses.add(pods);
 
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
-            pods.addMember(createMemberForEntry(key, value));
+            pods.addMember(createMemberForEntry(packageName, key, value));
         }
     }
 
-    private Member createMemberForEntry(final String name, final Object value) {
+    private Member createMemberForEntry(final String packageName, final String name, final Object value) {
         final String type;
         if (value instanceof Map) {
             Map map = (Map) value;
             type = StringUtility.ucfirst(name);
-            this.createForEntry(type, map);
+            this.createForEntry(packageName, type, map);
         } else if (value instanceof List) {
             final List list = (List) value;
             type = (new TypeInferer()).inferListType(list);
