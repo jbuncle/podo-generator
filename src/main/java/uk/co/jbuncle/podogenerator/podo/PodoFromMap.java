@@ -81,7 +81,7 @@ public class PodoFromMap {
             final List list = (List) value;
             type = (new TypeInferer()).inferListType(list);
         } else {
-            type = (new TypeInferer()).inferType(value);
+            type = (new TypeInferer()).inferType(value).getNativeType();
         }
 
         return new Member(type, name);

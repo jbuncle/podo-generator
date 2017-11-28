@@ -52,6 +52,14 @@ public class Generator {
         this.podoFromMap = podoFromMap;
     }
 
+    public static void generateClasses(
+            final Map<String, Object> map,
+            final File dir,
+            final String packageName
+    ) throws IOException {
+        Generator.createGenerator().generate(map, dir, packageName);
+    }
+
     public void generate(
             final Map<String, Object> map,
             final File dir,
@@ -60,7 +68,7 @@ public class Generator {
         final Set<Podo> podos = this.podoFromMap.build(packageName, map);
         for (final Podo podo : podos) {
             final String classContent = formatter.format(podo);
-            final File file = new File(dir, podo.getClassName());
+            final File file = new File(dir, podo.getClassName() + ".java");
             FileUtil.write(file, classContent);
         }
     }

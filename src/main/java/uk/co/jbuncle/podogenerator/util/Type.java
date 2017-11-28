@@ -21,53 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package uk.co.jbuncle.podogenerator.podo;
-
-import java.util.Objects;
-import uk.co.jbuncle.podogenerator.util.StringUtility;
+package uk.co.jbuncle.podogenerator.util;
 
 /**
  *
  * @author James Buncle <jbuncle@hotmail.com>
  */
-public class Member {
+public enum Type {
+    BOOLEAN("boolean", "Boolean"),
+    INT("int", "Integer"), 
+    CHAR("char", "Character"), 
+    DOUBLE("double", "Double"), 
+    STRING("String", "String");
+    
+    private final String nativeType;
+    private final String wrapperType;
 
-    private final String name;
-    private final String type;
-
-    public Member(String type, String name) {
-        this.name = name;
-        this.type = type;
+    private Type(String nativeType, String wrapperType) {
+        this.nativeType = nativeType;
+        this.wrapperType = wrapperType;
     }
 
-    public String getName() {
-        if (isReservedType()) {
-            return "_" + this.name;
-        }
-        return StringUtility.lcfirst(name);
+    public String getNativeType() {
+        return nativeType;
     }
 
-    private boolean isReservedType() {
-        switch (this.name) {
-            case "int":
-                return true;
-            case "char":
-                return true;
-
-            default:
-                return false;
-        }
+    public String getWrapperType() {
+        return wrapperType;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.name);
-        hash = 89 * hash + Objects.hashCode(this.type);
-        return hash;
-    }
 }

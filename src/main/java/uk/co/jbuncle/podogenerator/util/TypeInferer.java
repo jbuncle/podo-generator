@@ -36,20 +36,20 @@ public class TypeInferer {
             throw new IllegalArgumentException("Cannot infer type of empty list");
         }
         Object firstValue = list.get(0);
-        return "List<" + StringUtility.ucfirst(inferType(firstValue)) + ">";
+        return "List<" + inferType(firstValue).getWrapperType() + ">";
     }
 
-    public String inferType(final Object value) {
+    public Type inferType(final Object value) {
         if (isBoolean(value)) {
-            return "boolean";
+            return Type.BOOLEAN;
         } else if (isInteger(value)) {
-            return "int";
+            return Type.INT;
         } else if (isCharacter(value)) {
-            return "char";
+            return Type.CHAR;
         } else if (isDouble(value)) {
-            return "double";
+            return Type.DOUBLE;
         } else {
-            return "String";
+            return Type.STRING;
         }
     }
 
@@ -84,8 +84,7 @@ public class TypeInferer {
             try {
                 Integer.parseInt(string);
                 return true;
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return false;
             }
         }
@@ -101,8 +100,7 @@ public class TypeInferer {
             try {
                 Double.parseDouble(string);
                 return true;
-            }
-            catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 return false;
             }
         }

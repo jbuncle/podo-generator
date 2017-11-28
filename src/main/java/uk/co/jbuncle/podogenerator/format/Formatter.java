@@ -39,6 +39,8 @@ public class Formatter {
 
         sb.append("package ").append(pod.getPackageName()).append(";\n");
         sb.append("\n");
+        sb.append("import java.util.List;\n");
+        sb.append("\n");
         sb.append("public class ").append(pod.getClassName()).append("{\n");
         sb.append("\n");
         sb.append(this.generateMembers(pod));
@@ -55,7 +57,7 @@ public class Formatter {
         final StringBuilder sb = new StringBuilder();
 
         for (final Member member : pod.getMembers()) {
-            sb.append('\t').append("public ").append(member.getType()).append(" ").append(member.getName()).append(';').append('\n');
+            sb.append("    ").append("public ").append(member.getType()).append(" ").append(member.getName()).append(';').append('\n');
         }
 
         return sb.toString();
@@ -71,9 +73,9 @@ public class Formatter {
 
     private String generateGetter(final Member member) {
         final StringBuilder sb = new StringBuilder();
-        sb.append('\t').append("public ").append(member.getType()).append(' ').append(memberToGetterMethodName(member)).append("(){").append('\n');
-        sb.append("\t\treturn this.").append(member.getName()).append(";\n");
-        sb.append("\t}\n");
+        sb.append("    ").append("public ").append(member.getType()).append(' ').append(memberToGetterMethodName(member)).append("(){").append('\n');
+        sb.append("        return this.").append(member.getName()).append(";\n");
+        sb.append("    }\n");
         return sb.toString();
     }
 
@@ -87,9 +89,9 @@ public class Formatter {
 
     private String generateSetter(final Member member) {
         final StringBuilder sb = new StringBuilder();
-        sb.append('\t').append("public void ").append(memberToSetterMethodName(member)).append("(").append(member.getType()).append(" ").append(member.getName()).append("){").append('\n');
-        sb.append("\t\tthis.").append(member.getName()).append(" = ").append(member.getName()).append(";\n");
-        sb.append("\t}\n");
+        sb.append("    ").append("public void ").append(memberToSetterMethodName(member)).append("(").append(member.getType()).append(" ").append(member.getName()).append("){").append('\n');
+        sb.append("        this.").append(member.getName()).append(" = ").append(member.getName()).append(";\n");
+        sb.append("    }\n");
         return sb.toString();
     }
 
